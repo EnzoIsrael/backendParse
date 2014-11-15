@@ -14,10 +14,16 @@ module.exports = function(Parse, app){
 		query.descending("createdAt");
 		query.skip(skip);
 		query.limit(limit);
+		query.include('carro');
+		query.include('User');
 
 		query.find({
-		  success: function(anuncios) {
-		  	return res.send(anuncios);	    
+		  success: function(data) {
+		  	for(var i=0; i<data.length; i++){	  			
+		  		data[i].set(data[i].get('carro'));
+		  		data[i].set(data[i].get('User'));
+		  	}  
+		  	return res.send(data);	    
 		  },
 		  error: function(error) {
 		    return res.send(error.message);
@@ -33,11 +39,16 @@ module.exports = function(Parse, app){
 		, 	obj     = {}
 		,   id      = req.query.id;
 
+		query.include('carro');
+		query.include('User');
+
 		query.get(id, {
-		  success: function(anuncio) {  
-			return res.send(anuncio);	    
+		  success: function(data) {  	  			
+		  		data.set(data.get('carro'));
+		  		data.set(data.get('User'));		  	  
+			return res.send(data);	    
 		  },
-		  error: function(anuncio, error) {
+		  error: function(data, error) {
 		    return res.send(error.message);
 		  }
 		});
@@ -54,10 +65,16 @@ module.exports = function(Parse, app){
 		query.greaterThanOrEqualTo("fecha_fin", now);
 		query.descending("createdAt");
 		query.limit(limit);
+		query.include('carro');
+		query.include('User');
 
 		query.find({
-		  success: function(anuncios) {
-		  	return res.send(anuncios);	    
+		  success: function(data) {
+		  	for(var i=0; i<data.length; i++){	  			
+		  		data[i].set(data[i].get('carro'));
+		  		data[i].set(data[i].get('User'));
+		  	}
+		  	return res.send(data);	    
 		  },
 		  error: function(error) {
 		    return res.send(error.message);
@@ -75,28 +92,20 @@ module.exports = function(Parse, app){
 		query.descending("visitas");
 		query.limit(limit);
 		query.include('carro');
+		query.include('User');
 
 		query.find({
-		  success: function(anuncios) {
-		  	return res.send(anuncios);	    
+		  success: function(data) {
+		  	for(var i=0; i<data.length; i++){	  			
+		  		data[i].set(data[i].get('carro'));
+		  		data[i].set(data[i].get('User'));
+		  	}  
+		  	return res.send(data);	    
 		  },
 		  error: function(error) {
 		    return res.send(error.message);
 		  }
 		});
-	}
-
-	function getNestedCar(obj){
-		var car = {
-			tipo:obj.get("tipo"),
-			modelo:obj.get("modelo"),
-			marca:obj.get("marca"), 
-			motor:obj.get("motor"),
-			kilometraje:obj.get("kilometraje"),
-			rendimiento:obj.get("rendimiento"),
-			year:obj.get("year"),
-			combustible:obj.get("combustible")
-		}
 	}
 
 
@@ -137,6 +146,8 @@ module.exports = function(Parse, app){
 		
 		query.matchesQuery("carro", innerQuery);
 		query.greaterThanOrEqualTo("fecha_fin", now);
+		query.include('carro');
+		query.include('User');
 		
 		if(getParams.departamento !== ''){
 			query.equalTo("departamento", getParams.departamento);
@@ -149,8 +160,12 @@ module.exports = function(Parse, app){
 		}	
 		
 		query.find({
-		  success: function(anuncios) {
-		    return res.send(anuncios);
+		  success: function(data) {
+		  	for(var i=0; i<data.length; i++){	  			
+		  		data[i].set(data[i].get('carro'));
+		  		data[i].set(data[i].get('User'));
+		  	}  
+		    return res.send(data);
 		  },
 		  error: function(error) {
 		    return res.send(error.message);
