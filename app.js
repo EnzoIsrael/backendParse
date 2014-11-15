@@ -16,12 +16,15 @@ var config = require('./config.js')
 
 var  rutas = {
         register_User : '/api/user/register',
+        get_User : '/api/getUser',
 
         mostrar_anuncios: '/api/anuncios/all',
         mostrar_anuncio:  '/api/anuncio',
         filtro_anuncios:  '/api/fil_anuncio',
         destac_anuncios:  '/api/destac_anuncios',
-        mas_vist_anuncios:'/api/mas_vist_anuncios'
+        mas_vist_anuncios:'/api/mas_vist_anuncios',
+
+        get_carro: '/api/getCarro'
 
                 
     }     
@@ -33,6 +36,7 @@ var Anuncio = require('./Controllers/Anuncio')(Parse,app);
 
 // Usuario
 app.post(rutas.register_User, User.register);
+app.get(rutas.get_User, User.getUser);
 
 // Anuncio
 app.get(rutas.mostrar_anuncios, Anuncio.showAll);
@@ -40,6 +44,9 @@ app.get(rutas.mostrar_anuncio, Anuncio.showOne);
 app.get(rutas.filtro_anuncios, Anuncio.filtro_query);
 app.get(rutas.destac_anuncios, Anuncio.showFeatured);
 app.get(rutas.mas_vist_anuncios, Anuncio.showMostVisited);
+
+// Carro
+app.get(rutas.get_carro, Carro.getCarro);
 
 app.get("/", function(req, res){
     res.render('index', {});

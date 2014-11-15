@@ -23,5 +23,22 @@ module.exports = function(Parse, app){
 		});
 	}
 
+	this.getUser = function(req, res){
+
+		var User = Parse.Object.extend("User")
+		, 	query   = new Parse.Query(User)
+		,   id      = req.query.id;
+
+		query.get(id, {
+			success: function(user) {  
+				return res.send(user);	    
+			 },
+			 error: function(user, error) {
+			    return res.send(error.message);
+			  }
+		});
+
+	}
+
 	return this;
 }	
